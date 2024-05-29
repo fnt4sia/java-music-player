@@ -119,8 +119,8 @@ public class Home {
             musicContainer.add(playButton);
 
             playButton.addActionListener(e -> {
-                new Music(MusicModel.musicList.get(index));
                 window.dispose();
+                new Music(MusicModel.musicList.get(index));
             });
         }
     }

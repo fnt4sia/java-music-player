@@ -123,8 +123,8 @@ public class Search {
             musicContainer.add(playButton);
 
             playButton.addActionListener(e -> {
-                new Music(searchedMusic.get(index));
                 window.dispose();
+                new Music(searchedMusic.get(index));
             });
         }
     }
@@ -136,15 +136,15 @@ public class Search {
                 errorText.setText("Please fill the search field");
                 return;
             }else {
-                new Search(search);
                 window.dispose();
+                new Search(search);
             }
 
         });
 
         backButton.addActionListener(e -> {
-            new Home();
             window.dispose();
+            new Home();
         });
     }
 
