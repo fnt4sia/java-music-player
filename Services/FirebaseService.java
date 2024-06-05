@@ -4,14 +4,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import Model.MusicModel;
-import org.json.simple.*;
+import java.text.ParseException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import Model.MusicModel;
 
 public class FirebaseService {
     
-    public void makeRequest() {
+    public void makeRequest() throws ParseException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/.json"))
@@ -34,8 +35,8 @@ public class FirebaseService {
                     );
                     MusicModel.musicList.add(musicModel);
                 }
-            } catch (ParseException e) {
-                System.out.println("Error: " + e.getMessage());
+            } catch (org.json.simple.parser.ParseException e1) {
+                e1.printStackTrace();
             }
         })
         .exceptionally(e -> {

@@ -20,8 +20,9 @@ public class Music {
     JButton nextButton = new JButton();
     JButton previousButton = new JButton();
     JButton playButton = new JButton();
-    JButton backButton = new JButton("Back");
+    JButton pauseButton = new JButton();
     
+    JButton backButton = new JButton();
 
     public Boolean isPlaying = true;
 
@@ -29,25 +30,8 @@ public class Music {
     public final MusicModel musicModel;    
 
     public Music(MusicModel musicModel){
-
-        try {
-            BufferedImage nextImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\next.png"));
-            BufferedImage previousImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\back.png"));
-            BufferedImage playImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\pause-button.png"));
-
-            ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            ImageIcon playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-
-            nextButton.setIcon(nextIcon);
-            previousButton.setIcon(previousIcon);
-            playButton.setIcon(playIcon);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
+        setImageIcon(); 
+        
         try {
             URL linkImage = new URI(musicModel.getMusicImage()).toURL();
             BufferedImage image = ImageIO.read(linkImage);
@@ -84,6 +68,33 @@ public class Music {
         playerController.play();
     }
 
+    private void setImageIcon(){
+        try {
+            BufferedImage nextImg = ImageIO.read(new File("Assets/next.png"));
+            BufferedImage previousImg = ImageIO.read(new File("Assets/prev.png"));
+            BufferedImage playImg = ImageIO.read(new File("Assets/play-button-arrowhead.png"));
+            BufferedImage pauseImg = ImageIO.read(new File("Assets/pause-button.png"));
+            BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
+            
+            
+            
+            ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon pauseIcon = new ImageIcon(pauseImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            
+            backButton.setIcon(backIcon);
+            nextButton.setIcon(nextIcon);
+            previousButton.setIcon(previousIcon);
+            playButton.setIcon(playIcon);
+            pauseButton.setIcon(pauseIcon); //belum set bounds
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void addComponents(){
         window.add(imagePanel);
         window.add(musicTitle);
@@ -101,7 +112,7 @@ public class Music {
         nextButton.setBounds(350, 320, 100, 20);
         previousButton.setBounds(50, 320, 100, 20);
         playButton.setBounds(200, 320, 100, 20);
-        backButton.setBounds(10, 10, 75, 20);
+        backButton.setBounds(10, 10, 30, 20);
     }
 
     private void customComponents(){
@@ -131,12 +142,20 @@ public class Music {
 
         backButton.setForeground(Color.WHITE); 
         backButton.setBackground(new Color(80, 196, 237)); 
-        backButton.setFont(new Font("Arial", Font.BOLD, 12));
+        // backButton.setFont(new Font("Arial", Font.BOLD, 12));
         backButton.setBorderPainted(false); 
         backButton.setFocusPainted(false); 
         backButton.setVerticalAlignment(SwingConstants.CENTER);
 
+        window.getContentPane().setBackground(new Color(238, 249, 253));
 
+        musicTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        musicTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        musicTitle.setForeground(new Color(0, 0, 0));
+
+        musicArtist.setHorizontalAlignment(SwingConstants.CENTER);
+        musicArtist.setFont(new Font("Arial", Font.PLAIN, 15));
+        musicArtist.setForeground(new Color(140, 140, 140));
     }
 
     private void buttonFunction(){
