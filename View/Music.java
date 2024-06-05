@@ -22,7 +22,6 @@ public class Music {
     JButton playButton = new JButton();
     JButton backButton = new JButton("Back");
     
-
     public Boolean isPlaying = true;
 
     public final MusicPlayerController playerController;
@@ -46,7 +45,6 @@ public class Music {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         try {
             URL linkImage = new URI(musicModel.getMusicImage()).toURL();

@@ -4,7 +4,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import Model.MusicModel;
-import Services.FirebaseService;
+import Services.MusicService;
 import java.awt.*;
 
 public class Home {
@@ -17,7 +17,7 @@ public class Home {
     JLabel recommendedLabel = new JLabel("For You!!!");
     JLabel errorText = new JLabel("");
 
-    FirebaseService firebaseService = new FirebaseService();
+    MusicService firebaseService = new MusicService();
 
     public Home() {
         window.setSize(500, 500);

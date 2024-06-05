@@ -1,12 +1,13 @@
-import Services.FirebaseService;
+import Services.MusicService;
 import View.Home;
 
 public class Main {
     public static void main(String[] args) {
-        FirebaseService firebaseService = new FirebaseService();
+        MusicService firebaseService = new MusicService();
         try {
             firebaseService.makeRequest();
             new Home();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
