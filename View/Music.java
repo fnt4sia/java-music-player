@@ -2,16 +2,23 @@ package View;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import Controller.MusicPlayerController;
 import Model.MusicModel;
 
 import java.awt.*;
+// import java.awt.event.ActionEvent;
+// import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
 public class Music {
+    public final MusicPlayerController playerController;
+    public final MusicModel musicModel;    
     
     JFrame window = new JFrame("Music Player");
     JPanel imagePanel = new JPanel();
@@ -20,14 +27,16 @@ public class Music {
     JButton nextButton = new JButton();
     JButton previousButton = new JButton();
     JButton playButton = new JButton();
-    JButton pauseButton = new JButton();
-    
     JButton backButton = new JButton();
 
     public Boolean isPlaying = true;
 
-    public final MusicPlayerController playerController;
-    public final MusicModel musicModel;    
+    ImageIcon playIcon; //global biar bsa diakses di buttonFunction
+    ImageIcon pauseIcon;
+
+    //playhead frame
+    JSlider playhead = new JSlider(0, 0, 0); // Playhead slider
+
 
     public Music(MusicModel musicModel){
         setImageIcon(); 
@@ -66,6 +75,7 @@ public class Music {
 
         playerController = new MusicPlayerController(musicModel.getMusicPath());
         playerController.play();
+        startPlayhead();
     }
 
     private void setImageIcon(){
@@ -76,20 +86,16 @@ public class Music {
             BufferedImage pauseImg = ImageIO.read(new File("Assets/pause-button.png"));
             BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
             
-            
-            
             ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            ImageIcon playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            ImageIcon pauseIcon = new ImageIcon(pauseImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            pauseIcon = new ImageIcon(pauseImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             
             backButton.setIcon(backIcon);
             nextButton.setIcon(nextIcon);
             previousButton.setIcon(previousIcon);
-            playButton.setIcon(playIcon);
-            pauseButton.setIcon(pauseIcon); //belum set bounds
-
+            playButton.setIcon(pauseIcon);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,6 +109,7 @@ public class Music {
         window.add(previousButton);
         window.add(playButton);
         window.add(backButton);
+        window.add(playhead);
     }
 
     private void setBounds(){
@@ -113,6 +120,7 @@ public class Music {
         previousButton.setBounds(50, 320, 100, 20);
         playButton.setBounds(200, 320, 100, 20);
         backButton.setBounds(10, 10, 30, 20);
+        playhead.setBounds(50, 350, 400, 20);
     }
 
     private void customComponents(){
@@ -156,6 +164,8 @@ public class Music {
         musicArtist.setHorizontalAlignment(SwingConstants.CENTER);
         musicArtist.setFont(new Font("Arial", Font.PLAIN, 15));
         musicArtist.setForeground(new Color(140, 140, 140));
+        
+
     }
 
     private void buttonFunction(){
@@ -167,14 +177,11 @@ public class Music {
 
         playButton.addActionListener(e -> {
             if(isPlaying){
-
                 playerController.stop();
                 isPlaying = false;
 
                 try {
-                    BufferedImage playImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\play-button-arrowhead.png"));
-
-                    playButton.setIcon(new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+                    playButton.setIcon(playIcon);
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
@@ -185,12 +192,40 @@ public class Music {
                 isPlaying = true;
                 
                 try {
-                    BufferedImage pauseImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\pause-button.png"));
-                    playButton.setIcon(new ImageIcon(pauseImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+                    playButton.setIcon(pauseIcon);
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
             }
         });
+    }
+
+     private void startPlayhead() {
+        int duration = musicModel.getMusicDurationSeconds();
+        Timer timer = new Timer(1000, e -> {
+            playhead.setValue(playhead.getValue() + 1);
+        });
+        if(playhead.getValue() == duration) {
+            timer.stop();
+        }
+
+        playhead.setMaximum(duration);
+        playhead.setValue(0);
+        playhead.setPaintTicks(false);
+        playhead.setPaintLabels(false);
+        playhead.setSnapToTicks(false);
+        
+        timer.start();
+        
+        playhead.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (!playhead.getValueIsAdjusting()) {
+                    playerController.seek(playhead.getValue());
+                }
+            }
+        });
+        
+
     }
 }

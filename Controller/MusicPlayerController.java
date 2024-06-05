@@ -8,7 +8,7 @@ import java.net.URI;
 
 public class MusicPlayerController {
 
-    private Clip clip;
+    public Clip clip;
 
     public MusicPlayerController(String audioUrl) {
         try {
@@ -33,4 +33,12 @@ public class MusicPlayerController {
             clip.stop();
         }
     }
+
+    public void seek(int seconds) {
+        if (clip != null) {
+            int framesPerSecond = (int) clip.getFormat().getFrameRate();
+            clip.setFramePosition(seconds * framesPerSecond);
+        }
+    }
+
 }
