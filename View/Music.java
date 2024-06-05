@@ -4,13 +4,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import Controller.MusicPlayerController;
 import Model.MusicModel;
-
 import java.awt.*;
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
@@ -18,8 +15,8 @@ import java.net.URL;
 
 public class Music {
     public final MusicPlayerController playerController;
-    public final MusicModel musicModel;    
-    
+    public final MusicModel musicModel;
+
     JFrame window = new JFrame("Music Player");
     JPanel imagePanel = new JPanel();
     JLabel musicTitle = new JLabel("Music Title");
@@ -31,16 +28,15 @@ public class Music {
 
     public Boolean isPlaying = true;
 
-    ImageIcon playIcon; //global biar bsa diakses di buttonFunction
+    ImageIcon playIcon; // global biar bsa diakses di buttonFunction
     ImageIcon pauseIcon;
 
-    //playhead frame
+    // playhead 
     JSlider playhead = new JSlider(0, 0, 0); // Playhead slider
 
+    public Music(MusicModel musicModel) {
+        setImageIcon();
 
-    public Music(MusicModel musicModel){
-        setImageIcon(); 
-        
         try {
             URL linkImage = new URI(musicModel.getMusicImage()).toURL();
             BufferedImage image = ImageIO.read(linkImage);
@@ -52,7 +48,7 @@ public class Music {
                     g.drawImage(scaledImage, 0, 0, this);
                 }
             };
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -78,20 +74,20 @@ public class Music {
         startPlayhead();
     }
 
-    private void setImageIcon(){
+    private void setImageIcon() {
         try {
             BufferedImage nextImg = ImageIO.read(new File("Assets/next.png"));
             BufferedImage previousImg = ImageIO.read(new File("Assets/prev.png"));
             BufferedImage playImg = ImageIO.read(new File("Assets/play-button-arrowhead.png"));
             BufferedImage pauseImg = ImageIO.read(new File("Assets/pause-button.png"));
             BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
-            
+
             ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             pauseIcon = new ImageIcon(pauseImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            
+
             backButton.setIcon(backIcon);
             nextButton.setIcon(nextIcon);
             previousButton.setIcon(previousIcon);
@@ -101,7 +97,7 @@ public class Music {
         }
     }
 
-    private void addComponents(){
+    private void addComponents() {
         window.add(imagePanel);
         window.add(musicTitle);
         window.add(musicArtist);
@@ -112,7 +108,7 @@ public class Music {
         window.add(playhead);
     }
 
-    private void setBounds(){
+    private void setBounds() {
         imagePanel.setBounds(100, 50, 300, 200);
         musicTitle.setBounds(0, 260, 500, 20);
         musicArtist.setBounds(0, 280, 500, 20);
@@ -123,7 +119,7 @@ public class Music {
         playhead.setBounds(50, 350, 400, 20);
     }
 
-    private void customComponents(){
+    private void customComponents() {
         window.getContentPane().setBackground(new Color(238, 249, 253));
 
         imagePanel.setBackground(new Color(0, 0, 0));
@@ -148,11 +144,11 @@ public class Music {
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
 
-        backButton.setForeground(Color.WHITE); 
-        backButton.setBackground(new Color(80, 196, 237)); 
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(new Color(80, 196, 237));
         // backButton.setFont(new Font("Arial", Font.BOLD, 12));
-        backButton.setBorderPainted(false); 
-        backButton.setFocusPainted(false); 
+        backButton.setBorderPainted(false);
+        backButton.setFocusPainted(false);
         backButton.setVerticalAlignment(SwingConstants.CENTER);
 
         window.getContentPane().setBackground(new Color(238, 249, 253));
@@ -164,11 +160,10 @@ public class Music {
         musicArtist.setHorizontalAlignment(SwingConstants.CENTER);
         musicArtist.setFont(new Font("Arial", Font.PLAIN, 15));
         musicArtist.setForeground(new Color(140, 140, 140));
-        
 
     }
 
-    private void buttonFunction(){
+    private void buttonFunction() {
         backButton.addActionListener(e -> {
             playerController.stop();
             window.dispose();
@@ -176,36 +171,35 @@ public class Music {
         });
 
         playButton.addActionListener(e -> {
-            if(isPlaying){
+            if (isPlaying) {
                 playerController.stop();
                 isPlaying = false;
 
                 try {
                     playButton.setIcon(playIcon);
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
-                
             } else {
                 playerController.play();
                 isPlaying = true;
-                
+
                 try {
                     playButton.setIcon(pauseIcon);
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
     }
 
-     private void startPlayhead() {
+    private void startPlayhead() {
         int duration = musicModel.getMusicDurationSeconds();
         Timer timer = new Timer(1000, e -> {
             playhead.setValue(playhead.getValue() + 1);
         });
-        if(playhead.getValue() == duration) {
+        if (playhead.getValue() == duration) {
             timer.stop();
         }
 
@@ -214,9 +208,20 @@ public class Music {
         playhead.setPaintTicks(false);
         playhead.setPaintLabels(false);
         playhead.setSnapToTicks(false);
-        
         timer.start();
+
+        //mouse klik
+        playhead.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int mouseX = e.getX();
+                int progressBarVal = (int) Math.round(((double) mouseX / (double) playhead.getWidth()) * playhead.getMaximum());
+                playhead.setValue(progressBarVal);
+                playerController.seek(playhead.getValue());
+            }
+        });
         
+        //mouse geser
         playhead.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -225,7 +230,6 @@ public class Music {
                 }
             }
         });
-        
 
     }
 }
