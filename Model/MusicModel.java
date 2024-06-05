@@ -9,6 +9,7 @@ public class MusicModel {
     private final String musicDuration;
     private final String musicPath;
     private final String musicImage;
+    private int musicDurationSeconds;
 
     public static List<MusicModel> musicList = new ArrayList<>();
     
@@ -43,5 +44,11 @@ public class MusicModel {
 
     public String getMusicImage() {
         return musicImage;
+    }
+
+    public int getMusicDurationSeconds() {
+        musicDurationSeconds = Integer.parseInt(musicDuration.split(":")[0]) * 60 + Integer.parseInt(musicDuration.split(":")[1]);
+        System.out.println(musicDurationSeconds);
+        return musicDurationSeconds;
     }
 }

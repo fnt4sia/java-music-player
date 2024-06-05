@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\javafx\\json-simple-1.1.1.jar"
+        "c:\\javafx\\json-simple-1.1.1.jar",
+        "d:\\FILE\\Kuliah\\Semester 4\\MATERI PRAKTIKUM\\PBO\\LIB\\mysql-connector-java-8.0.22\\json-simple-1.1.1.jar"
     ]
 }
