@@ -25,15 +25,19 @@ public class Music {
     JButton previousButton = new JButton();
     JButton playButton = new JButton();
     JButton backButton = new JButton("Back");
+
+    ImageIcon playIcon;
+    ImageIcon pauseIcon;
+
+    JSlider playhead = new JSlider(); 
+
     
 
     public Boolean isPlaying = true;
 
-    public final MusicPlayerController playerController;
-    public final MusicModel musicModel;    
 
     public Music(MusicModel musicModel){
-
+        setImageIcon(); 
         try {
             BufferedImage nextImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\next.png"));
             BufferedImage previousImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\back.png"));
