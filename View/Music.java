@@ -216,7 +216,7 @@ public class Music {
         if (playhead.getValue() == duration) {
             timer.stop();
         }
-
+        playhead.setOpaque(false);
         playhead.setMaximum(duration);
         playhead.setValue(0);
         playhead.setPaintTicks(false);

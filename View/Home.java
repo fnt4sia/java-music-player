@@ -1,4 +1,5 @@
 package View;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -42,7 +43,7 @@ public class Home {
         buttonFunction();
     }
 
-    private void setBounds(){
+    private void setBounds() {
         titleLabel.setBounds(50, 20, 350, 30);
         searchTextField.setBounds(50, 60, 290, 25);
         errorText.setBounds(50, 85, 300, 20);
@@ -75,41 +76,46 @@ public class Home {
         playlistButton.setBorderPainted(false);
         playlistButton.setFocusPainted(false);
         playlistButton.setVerticalAlignment(SwingConstants.CENTER);
-        
+
     }
 
     private void musicContainer() {
         JPanel musicPanel = new JPanel();
-        musicPanel.setLayout(new BoxLayout(musicPanel, BoxLayout.Y_AXIS));
-        musicPanel.setOpaque(false); // Keep the transparent look if needed
-    
-        int initHeight = 140;
+        musicPanel.setLayout(new GridBagLayout());
+        musicPanel.setOpaque(true); 
+        // musicPanel.setBackground(new Color(238, 249, 253));
 
-        for(int i = 0;i < MusicModel.musicList.size();i++) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 10, 5, 10); //  padding
+        gbc.gridx = 0;
+
+        for (int i = 0; i < MusicModel.musicList.size(); i++) {
             final int index = i;
             JPanel musicContainer = new JPanel();
 
-            musicContainer.setBounds(50, initHeight, 400, 55);
             musicContainer.setLayout(null);
             musicContainer.setOpaque(false);
             musicContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
+            musicContainer.setPreferredSize(new Dimension(380, 55)); // harus ada ini jir biar bsa scroll
 
             window.add(musicContainer);
-            initHeight += 65;
 
             JLabel musicTitle = new JLabel(MusicModel.musicList.get(i).getMusicTitle());
+            // JLabel musicTitle = new JLabel("Music Title");
             musicTitle.setBounds(0, 0, 500, 20);
             musicTitle.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
-            musicTitle.setForeground(new Color(20, 20 ,20));
+            musicTitle.setForeground(new Color(20, 20, 20));
             musicContainer.add(musicTitle);
 
             JLabel musicArtist = new JLabel(MusicModel.musicList.get(i).getMusicArtist());
+            // JLabel musicArtist = new JLabel("Music Artist");
             musicArtist.setBounds(0, 15, 500, 20);
             musicArtist.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
             musicArtist.setForeground(new Color(125, 125, 125));
             musicContainer.add(musicArtist);
 
             JLabel albumName = new JLabel(MusicModel.musicList.get(i).getMusicAlbum());
+            // JLabel albumName = new JLabel("Album Name");
             albumName.setBounds(0, 25, 500, 40);
             albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             albumName.setForeground(new Color(125, 125, 125));
@@ -117,6 +123,7 @@ public class Home {
             musicContainer.add(albumName);
 
             JLabel musicDuration = new JLabel(MusicModel.musicList.get(i).getMusicDuration());
+            // JLabel musicDuration = new JLabel("Music Duration");
             musicDuration.setBounds(320, 25, 100, 40);
             musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             musicDuration.setForeground(new Color(125, 125, 125));
@@ -124,20 +131,28 @@ public class Home {
             musicContainer.add(musicDuration);
 
             JButton playButton = new JButton("Play");
-            playButton.setBounds(300, 10, 70, 20);
-            playButton.setForeground(Color.WHITE); 
-            playButton.setBackground(new Color(80, 196, 237)); 
+            playButton.setBounds(310, 10, 70, 20);
+            playButton.setForeground(Color.WHITE);
+            playButton.setBackground(new Color(80, 196, 237));
             playButton.setFont(new Font("Arial", Font.BOLD, 12));
-            playButton.setBorderPainted(false); 
-            playButton.setFocusPainted(false); 
+            playButton.setBorderPainted(false);
+            playButton.setFocusPainted(false);
             playButton.setVerticalAlignment(SwingConstants.CENTER);
             musicContainer.add(playButton);
+
+            musicPanel.add(musicContainer, gbc);
 
             playButton.addActionListener(e -> {
                 window.dispose();
                 new Music(MusicModel.musicList.get(index));
             });
         }
+        // push all items to the top
+        JPanel glue = new JPanel();
+        glue.setOpaque(false);
+        gbc.weighty = 1; 
+        musicPanel.add(glue, gbc);
+
         JScrollPane scrollPane = new JScrollPane(musicPanel);
         scrollPane.setBounds(50, 140, 400, 350);
         scrollPane.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
@@ -151,7 +166,7 @@ public class Home {
     private void buttonFunction() {
         searchButton.addActionListener(e -> {
             String search = searchTextField.getText();
-            if(search.isEmpty()) {
+            if (search.isEmpty()) {
                 errorText.setText("Please enter a search term");
             } else {
                 window.dispose();

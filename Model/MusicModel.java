@@ -39,7 +39,6 @@ public class MusicModel {
     }
 
     public String getMusicPath() {
-        System.out.println(musicPath);
         return musicPath;
     }
 
