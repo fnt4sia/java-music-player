@@ -2,7 +2,6 @@ package View;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-
 import Model.MusicModel;
 import Services.MusicService;
 import java.awt.*;
@@ -14,13 +13,13 @@ public class Home {
     JButton searchButton = new JButton("Search");
     JLabel titleLabel = new JLabel("Java Music Player");
     JLabel recommendedLabel = new JLabel("For You!!!");
+    JButton playlistButton = new JButton("Playlist");
     JLabel errorText = new JLabel("");
-    JScrollPane scrollPanel = new JScrollPane();
 
     MusicService firebaseService = new MusicService();
 
     public Home() {
-        window.setSize(500, 500);
+        window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
@@ -37,7 +36,8 @@ public class Home {
         window.add(searchButton);
         window.add(recommendedLabel);
         window.add(errorText);
-        window.add(scrollPanel);
+        window.add(playlistButton);
+
         musicContainer();
         buttonFunction();
     }
@@ -48,6 +48,7 @@ public class Home {
         errorText.setBounds(50, 85, 300, 20);
         searchButton.setBounds(350, 60, 100, 25);
         recommendedLabel.setBounds(50, 110, 450, 30);
+        playlistButton.setBounds(350, 500, 100, 30);
     }
 
     private void customComponents() {
@@ -67,45 +68,56 @@ public class Home {
 
         errorText.setFont(new Font("Arial", Font.BOLD, 12));
         errorText.setForeground(Color.RED);
+
+        playlistButton.setForeground(Color.WHITE);
+        playlistButton.setBackground(new Color(80, 196, 237));
+        playlistButton.setFont(new Font("Arial", Font.BOLD, 12));
+        playlistButton.setBorderPainted(false);
+        playlistButton.setFocusPainted(false);
+        playlistButton.setVerticalAlignment(SwingConstants.CENTER);
+        
     }
 
     private void musicContainer() {
+        JPanel musicPanel = new JPanel();
+        musicPanel.setLayout(new BoxLayout(musicPanel, BoxLayout.Y_AXIS));
+        musicPanel.setOpaque(false); // Keep the transparent look if needed
+    
         int initHeight = 140;
-        //wrap with JScrollPanel
 
         for(int i = 0;i < MusicModel.musicList.size();i++) {
             final int index = i;
-            JScrollPane musicContainer = new JScrollPane();
+            JPanel musicContainer = new JPanel();
 
-            musicContainer.setBounds(50, initHeight, 400, 45);
+            musicContainer.setBounds(50, initHeight, 400, 55);
             musicContainer.setLayout(null);
             musicContainer.setOpaque(false);
             musicContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
 
             window.add(musicContainer);
-            initHeight += 50;
+            initHeight += 65;
 
             JLabel musicTitle = new JLabel(MusicModel.musicList.get(i).getMusicTitle());
-            musicTitle.setBounds(0, 0, 150, 20);
+            musicTitle.setBounds(0, 0, 500, 20);
             musicTitle.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
             musicTitle.setForeground(new Color(20, 20 ,20));
             musicContainer.add(musicTitle);
 
             JLabel musicArtist = new JLabel(MusicModel.musicList.get(i).getMusicArtist());
-            musicArtist.setBounds(0, 15, 100, 20);
+            musicArtist.setBounds(0, 15, 500, 20);
             musicArtist.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
             musicArtist.setForeground(new Color(125, 125, 125));
             musicContainer.add(musicArtist);
 
             JLabel albumName = new JLabel(MusicModel.musicList.get(i).getMusicAlbum());
-            albumName.setBounds(100, 0, 100, 40);
+            albumName.setBounds(0, 25, 500, 40);
             albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             albumName.setForeground(new Color(125, 125, 125));
             albumName.setVerticalAlignment(SwingConstants.CENTER);
             musicContainer.add(albumName);
 
             JLabel musicDuration = new JLabel(MusicModel.musicList.get(i).getMusicDuration());
-            musicDuration.setBounds(200, 0, 100, 40);
+            musicDuration.setBounds(320, 25, 100, 40);
             musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             musicDuration.setForeground(new Color(125, 125, 125));
             musicDuration.setVerticalAlignment(SwingConstants.CENTER);
@@ -126,6 +138,14 @@ public class Home {
                 new Music(MusicModel.musicList.get(index));
             });
         }
+        JScrollPane scrollPane = new JScrollPane(musicPanel);
+        scrollPane.setBounds(50, 140, 400, 350);
+        scrollPane.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        window.add(scrollPane);
     }
 
     private void buttonFunction() {
@@ -137,7 +157,10 @@ public class Home {
                 window.dispose();
                 new Search(search);
             }
-
+        });
+        playlistButton.addActionListener(e -> {
+            window.dispose();
+            new Playlist();
         });
     }
 }

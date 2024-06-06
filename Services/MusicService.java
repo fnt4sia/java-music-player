@@ -12,10 +12,10 @@ import Model.MusicModel;
 
 public class MusicService {
     
-    public void makeRequest() throws ParseException {
+    public void getMusic() throws ParseException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/.json"))
+                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/Songs.json"))
                 .build();
 
         client.sendAsync(request, BodyHandlers.ofString())

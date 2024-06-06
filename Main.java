@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         MusicService firebaseService = new MusicService();
         try {
-            firebaseService.makeRequest();
+            firebaseService.getMusic();
             new Home();
 
         } catch (Exception e) {

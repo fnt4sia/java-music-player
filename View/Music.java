@@ -24,7 +24,7 @@ public class Music {
     JButton nextButton = new JButton();
     JButton previousButton = new JButton();
     JButton playButton = new JButton();
-    JButton backButton = new JButton("Back");
+    JButton backButton = new JButton();
 
     ImageIcon playIcon;
     ImageIcon pauseIcon;
@@ -130,7 +130,7 @@ public class Music {
         nextButton.setBounds(350, 320, 100, 20);
         previousButton.setBounds(50, 320, 100, 20);
         playButton.setBounds(200, 320, 100, 20);
-        backButton.setBounds(10, 10, 30, 20);
+        backButton.setBounds(10, 10, 30, 30);
         playhead.setBounds(50, 350, 400, 20);
     }
 
@@ -161,7 +161,6 @@ public class Music {
 
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(new Color(80, 196, 237));
-        // backButton.setFont(new Font("Arial", Font.BOLD, 12));
         backButton.setBorderPainted(false);
         backButton.setFocusPainted(false);
         backButton.setVerticalAlignment(SwingConstants.CENTER);
