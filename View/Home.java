@@ -10,12 +10,12 @@ import java.awt.*;
 public class Home {
 
     JFrame window = new JFrame("Home");
-
     JTextField searchTextField = new JTextField();
     JButton searchButton = new JButton("Search");
     JLabel titleLabel = new JLabel("Java Music Player");
     JLabel recommendedLabel = new JLabel("For You!!!");
     JLabel errorText = new JLabel("");
+    JScrollPane scrollPanel = new JScrollPane();
 
     MusicService firebaseService = new MusicService();
 
@@ -37,6 +37,7 @@ public class Home {
         window.add(searchButton);
         window.add(recommendedLabel);
         window.add(errorText);
+        window.add(scrollPanel);
         musicContainer();
         buttonFunction();
     }
@@ -70,9 +71,11 @@ public class Home {
 
     private void musicContainer() {
         int initHeight = 140;
+        //wrap with JScrollPanel
+
         for(int i = 0;i < MusicModel.musicList.size();i++) {
             final int index = i;
-            JPanel musicContainer = new JPanel();
+            JScrollPane musicContainer = new JScrollPane();
 
             musicContainer.setBounds(50, initHeight, 400, 45);
             musicContainer.setLayout(null);

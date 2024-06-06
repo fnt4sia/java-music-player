@@ -39,22 +39,18 @@ public class Music {
     public Music(MusicModel musicModel){
         setImageIcon(); 
         try {
-            BufferedImage nextImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\next.png"));
-            BufferedImage previousImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\back.png"));
-            BufferedImage playImg = ImageIO.read(new File("D:\\ProjectTemp\\final_project_oop\\Assets\\pause-button.png"));
+            BufferedImage nextImg = ImageIO.read(new File("Assets/next.png"));
+            BufferedImage previousImg = ImageIO.read(new File("Assets/prev.png"));
 
             ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            ImageIcon playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
             nextButton.setIcon(nextIcon);
             previousButton.setIcon(previousIcon);
-            playButton.setIcon(playIcon);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         try {
             URL linkImage = new URI(musicModel.getMusicImage()).toURL();
