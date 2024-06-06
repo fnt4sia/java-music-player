@@ -29,15 +29,12 @@ public class Music {
     ImageIcon playIcon;
     ImageIcon pauseIcon;
 
-    JSlider playhead = new JSlider(); 
-
-    
+    JSlider playhead = new JSlider();
 
     public Boolean isPlaying = true;
 
-
-    public Music(MusicModel musicModel){
-        setImageIcon(); 
+    public Music(MusicModel musicModel) {
+        setImageIcon();
         try {
             BufferedImage nextImg = ImageIO.read(new File("Assets/next.png"));
             BufferedImage previousImg = ImageIO.read(new File("Assets/prev.png"));
@@ -97,7 +94,7 @@ public class Music {
             BufferedImage pauseImg = ImageIO.read(new File("Assets/pause-button.png"));
             BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
 
-            ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
             ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
             playIcon = new ImageIcon(playImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
@@ -107,6 +104,7 @@ public class Music {
             nextButton.setIcon(nextIcon);
             previousButton.setIcon(previousIcon);
             playButton.setIcon(pauseIcon);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,6 +157,7 @@ public class Music {
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
 
+        backButton.setOpaque(false);
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(new Color(80, 196, 237));
         backButton.setBorderPainted(false);
@@ -224,18 +223,19 @@ public class Music {
         playhead.setSnapToTicks(false);
         timer.start();
 
-        //mouse klik
+        // mouse klik
         playhead.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 int mouseX = e.getX();
-                int progressBarVal = (int) Math.round(((double) mouseX / (double) playhead.getWidth()) * playhead.getMaximum());
+                int progressBarVal = (int) Math
+                        .round(((double) mouseX / (double) playhead.getWidth()) * playhead.getMaximum());
                 playhead.setValue(progressBarVal);
                 playerController.seek(playhead.getValue());
             }
         });
-        
-        //mouse geser
+
+        // mouse geser
         playhead.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

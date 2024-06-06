@@ -1,89 +1,69 @@
 package View;
 
+import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import Model.MusicModel;
-import Services.MusicService;
-import java.awt.*;
+import java.io.File;
+import javax.imageio.ImageIO;
 
-public class Home {
+public class AddMusic {
+    JFrame window = new JFrame("Add Playlist");
+    JButton backButton = new JButton();
 
-    JFrame window = new JFrame("Home");
-    JTextField searchTextField = new JTextField();
-    JButton searchButton = new JButton("Search");
-    JLabel titleLabel = new JLabel("Java Music Player");
-    JLabel recommendedLabel = new JLabel("For You!!!");
-    JButton playlistButton = new JButton("Playlist");
-    JLabel errorText = new JLabel("");
-
-    MusicService firebaseService = new MusicService();
-
-    public Home() {
+    public AddMusic() {
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
         window.setVisible(true);
 
+        setImageIcon();
         addComponents();
         setBounds();
         customComponents();
+        buttonFunction();
+        musicContainer();
+    }
+
+    private void setImageIcon() {
+        try {
+            BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
+            ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+           
+            backButton.setIcon(backIcon);
+            backButton.setOpaque(false);
+            backButton.setContentAreaFilled(false);
+            backButton.setBorderPainted(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addComponents() {
-        window.add(titleLabel);
-        window.add(searchTextField);
-        window.add(searchButton);
-        window.add(recommendedLabel);
-        window.add(errorText);
-        window.add(playlistButton);
-
-        musicContainer();
-        buttonFunction();
+        window.add(backButton);
     }
 
     private void setBounds() {
-        titleLabel.setBounds(50, 20, 350, 30);
-        searchTextField.setBounds(50, 60, 290, 25);
-        errorText.setBounds(50, 85, 300, 20);
-        searchButton.setBounds(350, 60, 100, 25);
-        recommendedLabel.setBounds(50, 110, 450, 30);
-        playlistButton.setBounds(350, 500, 100, 30);
+        backButton.setBounds(25, 20, 30, 30);
     }
 
     private void customComponents() {
         window.getContentPane().setBackground(new Color(238, 249, 253));
-
-        titleLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, 24));
-        titleLabel.setForeground(new Color(80, 196, 237));
-
-        searchTextField.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
-
-        searchButton.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
-        searchButton.setBackground(Color.white);
-        searchButton.setForeground(new Color(80, 196, 237));
-
-        recommendedLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        recommendedLabel.setForeground(new Color(80, 196, 237));
-
-        errorText.setFont(new Font("Arial", Font.BOLD, 12));
-        errorText.setForeground(Color.RED);
-
-        playlistButton.setForeground(Color.WHITE);
-        playlistButton.setBackground(new Color(80, 196, 237));
-        playlistButton.setFont(new Font("Arial", Font.BOLD, 12));
-        playlistButton.setBorderPainted(false);
-        playlistButton.setFocusPainted(false);
-        playlistButton.setVerticalAlignment(SwingConstants.CENTER);
-
+        backButton.setForeground(Color.WHITE);
+        backButton.setOpaque(false);
+        backButton.setBorderPainted(false);
+        backButton.setFocusPainted(false);
+        backButton.setVerticalAlignment(SwingConstants.CENTER);
     }
 
     private void musicContainer() {
         JPanel musicPanel = new JPanel();
         musicPanel.setLayout(new GridBagLayout());
-        musicPanel.setOpaque(true); 
-        // musicPanel.setBackground(new Color(238, 249, 253));
+        musicPanel.setOpaque(true);
+        musicPanel.setBackground(new Color(238, 249, 253));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
@@ -130,31 +110,43 @@ public class Home {
             musicDuration.setVerticalAlignment(SwingConstants.CENTER);
             musicContainer.add(musicDuration);
 
-            JButton playButton = new JButton("Play");
-            playButton.setBounds(310, 10, 70, 20);
-            playButton.setForeground(Color.WHITE);
-            playButton.setBackground(new Color(80, 196, 237));
-            playButton.setFont(new Font("Arial", Font.BOLD, 12));
-            playButton.setBorderPainted(false);
-            playButton.setFocusPainted(false);
-            playButton.setVerticalAlignment(SwingConstants.CENTER);
-            musicContainer.add(playButton);
+            JButton addButton = new JButton();
+            try {
+                BufferedImage addImg = ImageIO.read(new File("Assets/add.png"));
+                ImageIcon addIcon = new ImageIcon(addImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                addButton.setIcon(addIcon);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            addButton.setBounds(328, 5, 30, 30);
+            addButton.setFont(new Font("Arial", Font.BOLD, 12));
+            backButton.setContentAreaFilled(false);
+            addButton.setFocusPainted(false);
+            addButton.setVerticalAlignment(SwingConstants.CENTER);
+            musicContainer.add(addButton);
 
             musicPanel.add(musicContainer, gbc);
 
-            playButton.addActionListener(e -> {
-                window.dispose();
-                new Music(MusicModel.musicList.get(index));
+            addButton.addActionListener(e -> {
+                //confirmation dialog
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to add this music to the playlist?", "Confirmation", JOptionPane.NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    // controller disini
+                    JOptionPane.showMessageDialog(null, "Music added to playlist");
+                    window.dispose();
+                    new DetailPlaylist();
+                }
+                // new Music(MusicModel.musicList.get(index));
             });
         }
         // push all items to the top
         JPanel glue = new JPanel();
         glue.setOpaque(false);
-        gbc.weighty = 1; 
+        gbc.weighty = 1;
         musicPanel.add(glue, gbc);
 
         JScrollPane scrollPane = new JScrollPane(musicPanel);
-        scrollPane.setBounds(25, 140, 425, 350);
+        scrollPane.setBounds(25, 75, 425, 350);
         scrollPane.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -164,18 +156,9 @@ public class Home {
     }
 
     private void buttonFunction() {
-        searchButton.addActionListener(e -> {
-            String search = searchTextField.getText();
-            if (search.isEmpty()) {
-                errorText.setText("Please enter a search term");
-            } else {
-                window.dispose();
-                new Search(search);
-            }
-        });
-        playlistButton.addActionListener(e -> {
+        backButton.addActionListener(e -> {
             window.dispose();
-            new Playlist();
+            new DetailPlaylist();
         });
     }
 }

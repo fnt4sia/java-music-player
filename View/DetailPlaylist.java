@@ -1,89 +1,91 @@
 package View;
 
+import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+
 import Model.MusicModel;
-import Services.MusicService;
-import java.awt.*;
 
-public class Home {
+import java.io.File;
+import javax.imageio.ImageIO;
 
-    JFrame window = new JFrame("Home");
-    JTextField searchTextField = new JTextField();
-    JButton searchButton = new JButton("Search");
-    JLabel titleLabel = new JLabel("Java Music Player");
-    JLabel recommendedLabel = new JLabel("For You!!!");
-    JButton playlistButton = new JButton("Playlist");
-    JLabel errorText = new JLabel("");
+public class DetailPlaylist {
+    JFrame window = new JFrame("Add Playlist");
+    JButton addMusic = new JButton("Add Music");
+    JButton backButton = new JButton();
 
-    MusicService firebaseService = new MusicService();
-
-    public Home() {
+    public DetailPlaylist() {
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
         window.setVisible(true);
 
+        setImageIcon();
         addComponents();
         setBounds();
         customComponents();
+        buttonFunction();
+
+    }
+
+    private void setImageIcon() {
+        try {
+            BufferedImage backImg = ImageIO.read(new File("Assets/back.png"));
+            ImageIcon backIcon = new ImageIcon(backImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+            backButton.setIcon(backIcon);
+            backButton.setOpaque(false);
+            backButton.setContentAreaFilled(false);
+            backButton.setBorderPainted(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addComponents() {
-        window.add(titleLabel);
-        window.add(searchTextField);
-        window.add(searchButton);
-        window.add(recommendedLabel);
-        window.add(errorText);
-        window.add(playlistButton);
-
-        musicContainer();
-        buttonFunction();
+        window.add(backButton);
+        window.add(addMusic);
     }
 
     private void setBounds() {
-        titleLabel.setBounds(50, 20, 350, 30);
-        searchTextField.setBounds(50, 60, 290, 25);
-        errorText.setBounds(50, 85, 300, 20);
-        searchButton.setBounds(350, 60, 100, 25);
-        recommendedLabel.setBounds(50, 110, 450, 30);
-        playlistButton.setBounds(350, 500, 100, 30);
+        backButton.setBounds(25, 20, 30, 30);
     }
 
     private void customComponents() {
         window.getContentPane().setBackground(new Color(238, 249, 253));
+        backButton.setForeground(Color.WHITE);
+        backButton.setOpaque(false);
+        backButton.setBorderPainted(false);
+        backButton.setFocusPainted(false);
+        backButton.setVerticalAlignment(SwingConstants.CENTER);
 
-        titleLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, 24));
-        titleLabel.setForeground(new Color(80, 196, 237));
+        addMusic.setForeground(Color.WHITE);
+        addMusic.setBackground(new Color(80, 196, 237));
+        addMusic.setFont(new Font("Arial", Font.BOLD, 20));
+        addMusic.setBorderPainted(false);
+        addMusic.setFocusPainted(false);
+        addMusic.setVerticalAlignment(SwingConstants.CENTER);
 
-        searchTextField.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
-
-        searchButton.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
-        searchButton.setBackground(Color.white);
-        searchButton.setForeground(new Color(80, 196, 237));
-
-        recommendedLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        recommendedLabel.setForeground(new Color(80, 196, 237));
-
-        errorText.setFont(new Font("Arial", Font.BOLD, 12));
-        errorText.setForeground(Color.RED);
-
-        playlistButton.setForeground(Color.WHITE);
-        playlistButton.setBackground(new Color(80, 196, 237));
-        playlistButton.setFont(new Font("Arial", Font.BOLD, 12));
-        playlistButton.setBorderPainted(false);
-        playlistButton.setFocusPainted(false);
-        playlistButton.setVerticalAlignment(SwingConstants.CENTER);
-
+        if (MusicModel.musicList.size() > 0) {
+            musicContainer();
+            addMusic.setBounds(300, 35, 150, 30);
+        } else {
+            JLabel emptyLabel = new JLabel("No music found yet, get your first music now!");
+            emptyLabel.setBounds(50, 200, 400, 30);
+            emptyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            emptyLabel.setForeground(new Color(255, 0, 0));
+            window.add(emptyLabel);
+            addMusic.setBounds(50, 250, 400, 30);
+        }
     }
 
     private void musicContainer() {
         JPanel musicPanel = new JPanel();
         musicPanel.setLayout(new GridBagLayout());
-        musicPanel.setOpaque(true); 
-        // musicPanel.setBackground(new Color(238, 249, 253));
+        musicPanel.setOpaque(true);
+        musicPanel.setBackground(new Color(238, 249, 253));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
@@ -150,11 +152,11 @@ public class Home {
         // push all items to the top
         JPanel glue = new JPanel();
         glue.setOpaque(false);
-        gbc.weighty = 1; 
+        gbc.weighty = 1;
         musicPanel.add(glue, gbc);
 
         JScrollPane scrollPane = new JScrollPane(musicPanel);
-        scrollPane.setBounds(25, 140, 425, 350);
+        scrollPane.setBounds(25, 75, 425, 350);
         scrollPane.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -164,18 +166,14 @@ public class Home {
     }
 
     private void buttonFunction() {
-        searchButton.addActionListener(e -> {
-            String search = searchTextField.getText();
-            if (search.isEmpty()) {
-                errorText.setText("Please enter a search term");
-            } else {
-                window.dispose();
-                new Search(search);
-            }
-        });
-        playlistButton.addActionListener(e -> {
+        backButton.addActionListener(e -> {
             window.dispose();
             new Playlist();
         });
+        addMusic.addActionListener(e -> {
+            window.dispose();
+            new AddMusic();
+        });
     }
+
 }
