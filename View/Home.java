@@ -143,7 +143,9 @@ public class Home {
             musicPanel.add(musicContainer, gbc);
 
             playButton.addActionListener(e -> {
+                System.out.println(index);
                 window.dispose();
+                
                 new Music(MusicModel.musicList.get(index));
             });
         }
