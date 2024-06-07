@@ -10,6 +10,8 @@ import View.Music;
 import java.net.URL;
 import java.net.URI;
 
+import java.util.List;
+
 public class MusicPlayerController {
 
     public Clip clip;
@@ -71,6 +73,40 @@ public class MusicPlayerController {
                 } else {
                     clip.close();
                     new Music(MusicModel.musicList.get(i - 1));
+                    break;
+                }
+            }
+        }
+    }
+
+    public void nextMusicPlaylist(String musicTitle, List<MusicModel> musicList) {
+        for(int i = 0; i < musicList.size(); i++) {
+            if(musicList.get(i).getMusicTitle().equals(musicTitle)){
+                if(i == musicList.size() - 1) {
+                    System.out.println("here");
+                    clip.close();
+                    new Music(musicList.get(0), musicList);
+                    break;
+                } else {
+                    System.out.println("here2");
+                    clip.close();
+                    new Music(musicList.get(i + 1), musicList);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void previousMusicPlaylist(String musicTitle, List<MusicModel> musicList) {
+        for(int i = 0; i < musicList.size(); i++) {
+            if(musicList.get(i).getMusicTitle().equals(musicTitle)){
+                if(i == 0) {
+                    clip.close();
+                    new Music(musicList.get(musicList.size() - 1), musicList);
+                    break;
+                } else {
+                    clip.close();
+                    new Music(musicList.get(i - 1), musicList);
                     break;
                 }
             }

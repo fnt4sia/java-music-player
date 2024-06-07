@@ -160,7 +160,7 @@ public class DetailPlaylist {
 
             playButton.addActionListener(e -> {
                 window.dispose();
-                new Music(MusicModel.musicList.get(index));
+                new Music(MusicModel.musicList.get(index), playlist.getMusicList());
             });
         }
         // push all items to the top

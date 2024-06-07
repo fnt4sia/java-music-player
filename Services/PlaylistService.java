@@ -161,7 +161,6 @@ public class PlaylistService {
                 .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
                 .header("Content-Type", "application/json")
                 .build();
-
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(response.body());       

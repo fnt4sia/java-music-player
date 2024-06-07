@@ -12,10 +12,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 public class Music {
     public final MusicPlayerController playerController;
     public final MusicModel musicModel;
+    public List<MusicModel> listPlaylist;
 
     JFrame window = new JFrame("Music Player");
     JPanel imagePanel = new JPanel();
@@ -32,6 +34,72 @@ public class Music {
     JSlider playhead = new JSlider();
 
     public Boolean isPlaying = true;
+
+    public Music(MusicModel musicModel, List<MusicModel> listPlaylist) {
+        this.listPlaylist = listPlaylist;
+        this.musicModel = musicModel;
+
+        setImageIcon();
+        try {
+            BufferedImage nextImg = ImageIO.read(new File("Assets/next.png"));
+            BufferedImage previousImg = ImageIO.read(new File("Assets/prev.png"));
+
+            ImageIcon nextIcon = new ImageIcon(nextImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            ImageIcon previousIcon = new ImageIcon(previousImg.getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+
+            nextButton.setIcon(nextIcon);
+            previousButton.setIcon(previousIcon);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            URL linkImage = new URI(musicModel.getMusicImage()).toURL();
+            BufferedImage image = ImageIO.read(linkImage);
+            imagePanel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    Image scaledImage = image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+                    g.drawImage(scaledImage, 0, 0, this);
+                }
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        window.setSize(500, 500);
+        window.setBounds(0, 0, 500, 500);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLocationRelativeTo(null);
+        window.setLayout(null);
+        window.setVisible(true);
+
+        musicTitle.setText(musicModel.getMusicTitle());
+        musicArtist.setText(musicModel.getMusicArtist());
+
+        addComponents();
+        setBounds();
+        customComponents();
+        buttonFunction();
+
+        playerController = new MusicPlayerController(musicModel.getMusicPath());
+        playerController.play();
+        startPlayhead();
+
+        nextButton.addActionListener(e -> {
+            playerController.stop();
+            window.dispose();
+            playerController.nextMusicPlaylist(musicModel.getMusicTitle(), listPlaylist);
+        });
+
+        previousButton.addActionListener(e -> {
+            playerController.stop();
+            window.dispose();
+            playerController.previousMusicPlaylist(musicModel.getMusicTitle(), listPlaylist);
+        });
+    }
 
     public Music(MusicModel musicModel) {
         setImageIcon();
