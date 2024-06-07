@@ -30,10 +30,14 @@ public class Music {
 
     ImageIcon playIcon;
     ImageIcon pauseIcon;
+    
 
     JSlider playhead = new JSlider();
+    
 
     public Boolean isPlaying = true;
+    private Timer timer;
+
 
     public Music(MusicModel musicModel, List<MusicModel> listPlaylist) {
         this.listPlaylist = listPlaylist;
@@ -267,7 +271,7 @@ public class Music {
             if (isPlaying) {
                 playerController.stop();
                 isPlaying = false;
-
+                timer.stop();
                 try {
                     playButton.setIcon(playIcon);
                 } catch (Exception ex) {
@@ -277,7 +281,7 @@ public class Music {
             } else {
                 playerController.play();
                 isPlaying = true;
-
+                timer.start();
                 try {
                     playButton.setIcon(pauseIcon);
                 } catch (Exception ex) {
@@ -291,12 +295,12 @@ public class Music {
 
     private void startPlayhead() {
         int duration = musicModel.getMusicDurationSeconds();
-        Timer timer = new Timer(1000, e -> {
+        timer = new Timer(1000, e -> {
             playhead.setValue(playhead.getValue() + 1);
+            if (playhead.getValue() >= duration) {
+                timer.stop();
+            }
         });
-        if (playhead.getValue() == duration) {
-            timer.stop();
-        }
         playhead.setOpaque(false);
         playhead.setMaximum(duration);
         playhead.setValue(0);
