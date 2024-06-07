@@ -90,6 +90,12 @@ public class Music {
             window.dispose();
             playerController.nextMusic(musicModel.getMusicTitle());
         });
+
+        previousButton.addActionListener(e -> {
+            playerController.stop();
+            window.dispose();
+            playerController.previousMusic(musicModel.getMusicTitle());
+        });
     }
 
     private void setImageIcon() {

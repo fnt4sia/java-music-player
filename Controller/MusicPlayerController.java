@@ -45,7 +45,6 @@ public class MusicPlayerController {
         }
     }
 
-    // function get next music
     public void nextMusic(String musicTitle) {
         for(int i = 0; i < MusicModel.musicList.size(); i++) {
             if(MusicModel.musicList.get(i).getMusicTitle().equals(musicTitle)){
@@ -60,7 +59,22 @@ public class MusicPlayerController {
                 }
             }
         }
-        
+    }
+
+    public void previousMusic(String musicTitle) {
+        for(int i = 0; i < MusicModel.musicList.size(); i++) {
+            if(MusicModel.musicList.get(i).getMusicTitle().equals(musicTitle)){
+                if(i == 0) {
+                    clip.close();
+                    new Music(MusicModel.musicList.get(MusicModel.musicList.size() - 1));
+                    break;
+                } else {
+                    clip.close();
+                    new Music(MusicModel.musicList.get(i - 1));
+                    break;
+                }
+            }
+        }
     }
 
 }
