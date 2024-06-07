@@ -4,11 +4,19 @@ import java.io.File;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+
+import Controller.UpdatePlaylistController;
+import Services.PlaylistService;
+
 import javax.imageio.ImageIO;
 
 
 public class UpdatePlaylist {
-     JFrame window = new JFrame("Add Playlist");
+    String playlistName;    
+    String description;
+    String playlistImage;
+
+    JFrame window = new JFrame("Add Playlist");
     JLabel titleLabel = new JLabel("Update Your Beloved Playlist!");
 
     JLabel nameLabel = new JLabel("Playlist Name");
@@ -22,7 +30,15 @@ public class UpdatePlaylist {
     JButton addPlaylist = new JButton("Update Playlist");
     JButton backButton = new JButton();
 
-    public UpdatePlaylist() {
+    public UpdatePlaylist(String playlistName, String description, String playlistImage) {
+        this.playlistName = playlistName;
+        this.description = description;
+        this.playlistImage = playlistImage;
+
+        jtPlaylistName.setText(playlistName);
+        jtPlaylistDescription.setText(description);
+        jtPlaylistImage.setText(playlistImage);
+
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
@@ -115,7 +131,8 @@ public class UpdatePlaylist {
                     || jtPlaylistImage.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(window, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                // controller disini tot
+                new UpdatePlaylistController().updatePlaylist(jtPlaylistName.getText(), jtPlaylistDescription.getText(),
+                        jtPlaylistImage.getText());
                 JOptionPane.showMessageDialog(window, "Playlist Added Successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
                 window.dispose();

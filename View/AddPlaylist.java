@@ -119,7 +119,6 @@ public class AddPlaylist {
                 new AddPlaylistController().addPlaylist(jtPlaylistName.getText(), jtPlaylistDescription.getText(), jtPlaylistImage.getText());
                 JOptionPane.showMessageDialog(window, "Playlist Added Successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
-                PlaylistModel.playlist.clear();
                 window.dispose();
                 new Playlist();
             }

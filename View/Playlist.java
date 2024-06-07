@@ -88,6 +88,7 @@ public class Playlist {
 
         
         for (int i = 0; i < PlaylistModel.playlist.size(); i++) {
+            final int index = i;
             JPanel songPanel = new JPanel();
 
             songPanel.setLayout(null);
@@ -156,7 +157,11 @@ public class Playlist {
             
             playlistUpdate.addActionListener(e -> {
                 window.dispose();
-                new UpdatePlaylist();
+                new UpdatePlaylist(
+                    PlaylistModel.playlist.get(index).getPlaylistName(),
+                    PlaylistModel.playlist.get(index).getDescription(),
+                    PlaylistModel.playlist.get(index).getPlaylistImage()
+                );
             });
         }
         // push all items to the top

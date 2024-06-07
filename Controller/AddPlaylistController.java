@@ -8,7 +8,7 @@ public class AddPlaylistController {
         PlaylistService playlistService = new PlaylistService();
         try {
             playlistService.addPlaylist(playlistName, description, playlistImage);
-            System.out.println("Controller aman");
+            playlistService.getPlaylist();
         } catch (Exception e) {
             e.printStackTrace();
         }
