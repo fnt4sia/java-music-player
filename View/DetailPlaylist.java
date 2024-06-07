@@ -115,7 +115,7 @@ public class DetailPlaylist {
             musicContainer.setLayout(null);
             musicContainer.setOpaque(false);
             musicContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
-            musicContainer.setPreferredSize(new Dimension(380, 55)); // harus ada ini jir biar bsa scroll
+            musicContainer.setPreferredSize(new Dimension(380, 70)); // harus ada ini jir biar bsa scroll
 
             window.add(musicContainer);
 
@@ -135,7 +135,7 @@ public class DetailPlaylist {
 
             JLabel albumName = new JLabel(playlist.getMusicList().get(index).getMusicAlbum());
             // JLabel albumName = new JLabel("Album Name");
-            albumName.setBounds(0, 25, 500, 40);
+            albumName.setBounds(0, 40, 500, 40);
             albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             albumName.setForeground(new Color(125, 125, 125));
             albumName.setVerticalAlignment(SwingConstants.CENTER);
@@ -143,21 +143,34 @@ public class DetailPlaylist {
 
             JLabel musicDuration = new JLabel(playlist.getMusicList().get(index).getMusicDuration());
             // JLabel musicDuration = new JLabel("Music Duration");
-            musicDuration.setBounds(330, 25, 100, 40);
+            musicDuration.setBounds(330, 40, 100, 40);
             musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
             musicDuration.setForeground(new Color(125, 125, 125));
             musicDuration.setVerticalAlignment(SwingConstants.CENTER);
             musicContainer.add(musicDuration);
 
             JButton playButton = new JButton("Play");
-            playButton.setBounds(310, 10, 70, 20);
+            playButton.setBounds(310, 0, 80, 20);
             playButton.setForeground(Color.WHITE);
             playButton.setBackground(new Color(80, 196, 237));
             playButton.setFont(new Font("Arial", Font.BOLD, 12));
             playButton.setBorderPainted(false);
             playButton.setFocusPainted(false);
             playButton.setVerticalAlignment(SwingConstants.CENTER);
+            playButton.setHorizontalAlignment(SwingConstants.CENTER);
             musicContainer.add(playButton);
+
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.setBounds(310, 25, 80, 20);
+            deleteButton.setForeground(Color.WHITE);
+            deleteButton.setBackground(new Color(255, 0, 0));
+            deleteButton.setFont(new Font("Arial", Font.BOLD, 12));
+            deleteButton.setBorderPainted(false);
+            deleteButton.setFocusPainted(false);
+            deleteButton.setVerticalAlignment(SwingConstants.CENTER);
+            deleteButton.setHorizontalAlignment(SwingConstants.CENTER);
+            musicContainer.add(deleteButton);
+
 
             musicPanel.add(musicContainer, gbc);
 
