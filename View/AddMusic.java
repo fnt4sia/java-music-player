@@ -77,72 +77,84 @@ public class AddMusic {
         gbc.gridx = 0;
 
         for (int i = 0; i < MusicModel.musicList.size(); i++) {
-            final int index = i;
-            JPanel musicContainer = new JPanel();
 
-            musicContainer.setLayout(null);
-            musicContainer.setOpaque(false);
-            musicContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
-            musicContainer.setPreferredSize(new Dimension(380, 55)); // harus ada ini jir biar bsa scroll
-
-            window.add(musicContainer);
-
-            JLabel musicTitle = new JLabel(MusicModel.musicList.get(i).getMusicTitle());
-            // JLabel musicTitle = new JLabel("Music Title");
-            musicTitle.setBounds(0, 0, 500, 20);
-            musicTitle.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
-            musicTitle.setForeground(new Color(20, 20, 20));
-            musicContainer.add(musicTitle);
-
-            JLabel musicArtist = new JLabel(MusicModel.musicList.get(i).getMusicArtist());
-            // JLabel musicArtist = new JLabel("Music Artist");
-            musicArtist.setBounds(0, 15, 500, 20);
-            musicArtist.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
-            musicArtist.setForeground(new Color(125, 125, 125));
-            musicContainer.add(musicArtist);
-
-            JLabel albumName = new JLabel(MusicModel.musicList.get(i).getMusicAlbum());
-            // JLabel albumName = new JLabel("Album Name");
-            albumName.setBounds(0, 25, 500, 40);
-            albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
-            albumName.setForeground(new Color(125, 125, 125));
-            albumName.setVerticalAlignment(SwingConstants.CENTER);
-            musicContainer.add(albumName);
-
-            JLabel musicDuration = new JLabel(MusicModel.musicList.get(i).getMusicDuration());
-            // JLabel musicDuration = new JLabel("Music Duration");
-            musicDuration.setBounds(330, 25, 100, 40);
-            musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
-            musicDuration.setForeground(new Color(125, 125, 125));
-            musicDuration.setVerticalAlignment(SwingConstants.CENTER);
-            musicContainer.add(musicDuration);
-
-            JButton addButton = new JButton();
-            try {
-                BufferedImage addImg = ImageIO.read(new File("Assets/add.png"));
-                ImageIcon addIcon = new ImageIcon(addImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-                addButton.setIcon(addIcon);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            addButton.setBounds(328, 5, 30, 30);
-            addButton.setFont(new Font("Arial", Font.BOLD, 12));
-            backButton.setContentAreaFilled(false);
-            addButton.setFocusPainted(false);
-            addButton.setVerticalAlignment(SwingConstants.CENTER);
-            musicContainer.add(addButton);
-
-            musicPanel.add(musicContainer, gbc);
-
-            addButton.addActionListener(e -> {
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to add this music to the playlist?", "Confirmation", JOptionPane.NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    new AddMusicController().addMusic(playlist, MusicModel.musicList.get(index));
-                    JOptionPane.showMessageDialog(null, "Music added to playlist");
-                    window.dispose();
-                    new DetailPlaylist(playlist);
+            boolean isExist = false;
+            for(int j = 0; j < playlist.getMusicList().size(); j++) {
+                
+                if(MusicModel.musicList.get(i).getMusicTitle().equals(playlist.getMusicList().get(j).getMusicTitle())) {
+                    isExist = true;
+                    break;
                 }
-            });
+            }
+
+            if(!isExist) {
+                final int index = i;
+                JPanel musicContainer = new JPanel();
+
+                musicContainer.setLayout(null);
+                musicContainer.setOpaque(false);
+                musicContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
+                musicContainer.setPreferredSize(new Dimension(380, 55)); // harus ada ini jir biar bsa scroll
+
+                window.add(musicContainer);
+
+                JLabel musicTitle = new JLabel(MusicModel.musicList.get(i).getMusicTitle());
+                // JLabel musicTitle = new JLabel("Music Title");
+                musicTitle.setBounds(0, 0, 500, 20);
+                musicTitle.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
+                musicTitle.setForeground(new Color(20, 20, 20));
+                musicContainer.add(musicTitle);
+
+                JLabel musicArtist = new JLabel(MusicModel.musicList.get(i).getMusicArtist());
+                // JLabel musicArtist = new JLabel("Music Artist");
+                musicArtist.setBounds(0, 15, 500, 20);
+                musicArtist.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
+                musicArtist.setForeground(new Color(125, 125, 125));
+                musicContainer.add(musicArtist);
+
+                JLabel albumName = new JLabel(MusicModel.musicList.get(i).getMusicAlbum());
+                // JLabel albumName = new JLabel("Album Name");
+                albumName.setBounds(0, 25, 500, 40);
+                albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
+                albumName.setForeground(new Color(125, 125, 125));
+                albumName.setVerticalAlignment(SwingConstants.CENTER);
+                musicContainer.add(albumName);
+
+                JLabel musicDuration = new JLabel(MusicModel.musicList.get(i).getMusicDuration());
+                // JLabel musicDuration = new JLabel("Music Duration");
+                musicDuration.setBounds(330, 25, 100, 40);
+                musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
+                musicDuration.setForeground(new Color(125, 125, 125));
+                musicDuration.setVerticalAlignment(SwingConstants.CENTER);
+                musicContainer.add(musicDuration);
+
+                JButton addButton = new JButton();
+                try {
+                    BufferedImage addImg = ImageIO.read(new File("Assets/add.png"));
+                    ImageIcon addIcon = new ImageIcon(addImg.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                    addButton.setIcon(addIcon);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                addButton.setBounds(328, 5, 30, 30);
+                addButton.setFont(new Font("Arial", Font.BOLD, 12));
+                backButton.setContentAreaFilled(false);
+                addButton.setFocusPainted(false);
+                addButton.setVerticalAlignment(SwingConstants.CENTER);
+                musicContainer.add(addButton);
+
+                musicPanel.add(musicContainer, gbc);
+
+                addButton.addActionListener(e -> {
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to add this music to the playlist?", "Confirmation", JOptionPane.NO_OPTION);
+                    if (dialogResult == JOptionPane.YES_OPTION) {
+                        new AddMusicController().addMusic(playlist, MusicModel.musicList.get(index));
+                        JOptionPane.showMessageDialog(null, "Music added to playlist");
+                        window.dispose();
+                        new DetailPlaylist(playlist);
+                    }
+                });
+            }
         }
 
         JPanel glue = new JPanel();
@@ -163,7 +175,7 @@ public class AddMusic {
     private void buttonFunction() {
         backButton.addActionListener(e -> {
             window.dispose();
-            new Playlist();
+            new DetailPlaylist(playlist);
         });
     }
 }

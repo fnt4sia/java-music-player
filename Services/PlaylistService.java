@@ -67,12 +67,12 @@ public class PlaylistService {
                     if (songObj instanceof JSONObject) {
                         JSONObject songJSON = (JSONObject) songObj;
                         MusicModel song = new MusicModel(
-                            (String) songJSON.get("album"),
+                            (String) songJSON.get("title"),
                             (String) songJSON.get("artist"),
+                            (String) songJSON.get("album"),
                             (String) songJSON.get("duration"),
-                            (String) songJSON.get("image"),
                             (String) songJSON.get("link"),
-                            (String) songJSON.get("title")
+                            (String) songJSON.get("image")
                         );
                         songsList.add(song);
                     }

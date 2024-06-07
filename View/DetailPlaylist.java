@@ -37,6 +37,9 @@ public class DetailPlaylist {
         customComponents();
         buttonFunction();
 
+        for (int i = 0; i < playlist.getMusicList().size(); i++) {
+            System.out.println(playlist.getMusicList().get(i).getMusicTitle());
+        }
     }
 
     private void setImageIcon() {
@@ -116,21 +119,21 @@ public class DetailPlaylist {
 
             window.add(musicContainer);
 
-            JLabel musicTitle = new JLabel(MusicModel.musicList.get(i).getMusicTitle());
+            JLabel musicTitle = new JLabel(playlist.getMusicList().get(index).getMusicTitle());
             // JLabel musicTitle = new JLabel("Music Title");
             musicTitle.setBounds(0, 0, 500, 20);
             musicTitle.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
             musicTitle.setForeground(new Color(20, 20, 20));
             musicContainer.add(musicTitle);
 
-            JLabel musicArtist = new JLabel(MusicModel.musicList.get(i).getMusicArtist());
+            JLabel musicArtist = new JLabel(playlist.getMusicList().get(index).getMusicArtist());
             // JLabel musicArtist = new JLabel("Music Artist");
             musicArtist.setBounds(0, 15, 500, 20);
             musicArtist.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
             musicArtist.setForeground(new Color(125, 125, 125));
             musicContainer.add(musicArtist);
 
-            JLabel albumName = new JLabel(MusicModel.musicList.get(i).getMusicAlbum());
+            JLabel albumName = new JLabel(playlist.getMusicList().get(index).getMusicAlbum());
             // JLabel albumName = new JLabel("Album Name");
             albumName.setBounds(0, 25, 500, 40);
             albumName.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
@@ -138,7 +141,7 @@ public class DetailPlaylist {
             albumName.setVerticalAlignment(SwingConstants.CENTER);
             musicContainer.add(albumName);
 
-            JLabel musicDuration = new JLabel(MusicModel.musicList.get(i).getMusicDuration());
+            JLabel musicDuration = new JLabel(playlist.getMusicList().get(index).getMusicDuration());
             // JLabel musicDuration = new JLabel("Music Duration");
             musicDuration.setBounds(330, 25, 100, 40);
             musicDuration.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
