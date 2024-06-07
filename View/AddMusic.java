@@ -70,7 +70,6 @@ public class AddMusic {
         gbc.gridx = 0;
 
         for (int i = 0; i < MusicModel.musicList.size(); i++) {
-            final int index = i;
             JPanel musicContainer = new JPanel();
 
             musicContainer.setLayout(null);

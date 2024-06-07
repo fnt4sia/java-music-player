@@ -5,8 +5,6 @@ import java.awt.image.*;
 import javax.swing.*;
 
 import Controller.AddPlaylistController;
-import Model.PlaylistModel;
-import Services.PlaylistService;
 
 import java.io.File;
 import javax.imageio.ImageIO;

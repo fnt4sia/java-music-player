@@ -160,7 +160,8 @@ public class Playlist {
                 new UpdatePlaylist(
                     PlaylistModel.playlist.get(index).getPlaylistName(),
                     PlaylistModel.playlist.get(index).getDescription(),
-                    PlaylistModel.playlist.get(index).getPlaylistImage()
+                    PlaylistModel.playlist.get(index).getPlaylistImage(),
+                    PlaylistModel.playlist.get(index).getUniqueId()
                 );
             });
         }

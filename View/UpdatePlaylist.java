@@ -6,8 +6,6 @@ import java.awt.image.*;
 import javax.swing.*;
 
 import Controller.UpdatePlaylistController;
-import Services.PlaylistService;
-
 import javax.imageio.ImageIO;
 
 
@@ -15,6 +13,7 @@ public class UpdatePlaylist {
     String playlistName;    
     String description;
     String playlistImage;
+    String uniqueId;
 
     JFrame window = new JFrame("Add Playlist");
     JLabel titleLabel = new JLabel("Update Your Beloved Playlist!");
@@ -30,10 +29,11 @@ public class UpdatePlaylist {
     JButton addPlaylist = new JButton("Update Playlist");
     JButton backButton = new JButton();
 
-    public UpdatePlaylist(String playlistName, String description, String playlistImage) {
+    public UpdatePlaylist(String playlistName, String description, String playlistImage, String uniqueId) {
         this.playlistName = playlistName;
         this.description = description;
         this.playlistImage = playlistImage;
+        this.uniqueId = uniqueId;
 
         jtPlaylistName.setText(playlistName);
         jtPlaylistDescription.setText(description);
@@ -132,7 +132,7 @@ public class UpdatePlaylist {
                 JOptionPane.showMessageDialog(window, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 new UpdatePlaylistController().updatePlaylist(jtPlaylistName.getText(), jtPlaylistDescription.getText(),
-                        jtPlaylistImage.getText());
+                        jtPlaylistImage.getText(), uniqueId);
                 JOptionPane.showMessageDialog(window, "Playlist Added Successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
                 window.dispose();

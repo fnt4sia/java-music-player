@@ -82,11 +82,11 @@ public class PlaylistService {
         }   
     }
 
-    public void updatePlaylist(String playlistName, String description, String playlistImage) throws ParseException {
+    public void updatePlaylist(String playlistName, String description, String playlistImage, String uniqueId) throws ParseException {
         HttpClient client = HttpClient.newHttpClient();
         String jsonBody = String.format("{\"playlistName\":\"%s\",\"description\":\"%s\", \"playlistImage\":\"%s\"}", playlistName, description, playlistImage);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/Playlist.json"))
+                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/Playlist/"+uniqueId+".json"))
                 .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
                 .build();
 
