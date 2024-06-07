@@ -5,7 +5,11 @@ import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+
+import Controller.AddMusicController;
 import Model.MusicModel;
+import Model.PlaylistModel;
+
 import java.io.File;
 import javax.imageio.ImageIO;
 
@@ -13,7 +17,10 @@ public class AddMusic {
     JFrame window = new JFrame("Add Playlist");
     JButton backButton = new JButton();
 
-    public AddMusic() {
+    PlaylistModel playlist;
+
+    public AddMusic(PlaylistModel playlist) {
+        this.playlist = playlist;
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
@@ -70,6 +77,7 @@ public class AddMusic {
         gbc.gridx = 0;
 
         for (int i = 0; i < MusicModel.musicList.size(); i++) {
+            final int index = i;
             JPanel musicContainer = new JPanel();
 
             musicContainer.setLayout(null);
@@ -127,18 +135,16 @@ public class AddMusic {
             musicPanel.add(musicContainer, gbc);
 
             addButton.addActionListener(e -> {
-                //confirmation dialog
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to add this music to the playlist?", "Confirmation", JOptionPane.NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    // controller disini
+                    new AddMusicController().addMusic(playlist, MusicModel.musicList.get(index));
                     JOptionPane.showMessageDialog(null, "Music added to playlist");
                     window.dispose();
-                    new DetailPlaylist();
+                    new Playlist();
                 }
-                // new Music(MusicModel.musicList.get(index));
             });
         }
-        // push all items to the top
+
         JPanel glue = new JPanel();
         glue.setOpaque(false);
         gbc.weighty = 1;
@@ -157,7 +163,7 @@ public class AddMusic {
     private void buttonFunction() {
         backButton.addActionListener(e -> {
             window.dispose();
-            new DetailPlaylist();
+            new Playlist();
         });
     }
 }

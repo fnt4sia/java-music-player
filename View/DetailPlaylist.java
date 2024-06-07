@@ -7,16 +7,21 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import Model.MusicModel;
+import Model.PlaylistModel;
 
 import java.io.File;
 import javax.imageio.ImageIO;
 
 public class DetailPlaylist {
+
+    PlaylistModel playlist;
+
     JFrame window = new JFrame("Add Playlist");
     JButton addMusic = new JButton("Add Music");
     JButton backButton = new JButton();
 
-    public DetailPlaylist() {
+    public DetailPlaylist(PlaylistModel playlist) {
+        this.playlist = playlist;
         window.setSize(500, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
@@ -91,7 +96,7 @@ public class DetailPlaylist {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.gridx = 0;
 
-        for (int i = 0; i < MusicModel.musicList.size(); i++) {
+        for (int i = 0; i < playlist.getMusicList().size(); i++) {
             final int index = i;
             JPanel musicContainer = new JPanel();
 
@@ -172,7 +177,7 @@ public class DetailPlaylist {
         });
         addMusic.addActionListener(e -> {
             window.dispose();
-            new AddMusic();
+            new AddMusic(playlist);
         });
     }
 

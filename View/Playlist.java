@@ -164,7 +164,7 @@ public class Playlist {
 
             playlistTitle.addActionListener(e -> {
                 window.dispose();
-                new DetailPlaylist();
+                new DetailPlaylist(PlaylistModel.playlist.get(index));
             });
             
             playlistUpdate.addActionListener(e -> {
@@ -186,7 +186,6 @@ public class Playlist {
                     new UpdatePlaylistController().deletePlaylist(PlaylistModel.playlist.get(index).getUniqueId());
                     window.dispose();
                     new Playlist();
-    
                 }
             });
         }

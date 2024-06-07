@@ -9,11 +9,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.*;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
+import java.util.List;
 
+import Model.MusicModel;
 import Model.PlaylistModel;
 
 public class PlaylistService {
     
+    @SuppressWarnings("unchecked")
     public void getPlaylist() {
         PlaylistModel.playlist.clear();
     
@@ -25,7 +29,6 @@ public class PlaylistService {
         client.sendAsync(request, BodyHandlers.ofString())
         .thenApply(HttpResponse::body)
         .thenAccept(jsonBody -> {
-            System.out.println(jsonBody);
             try {
                 Object json = new JSONParser().parse(jsonBody);
                 if (json instanceof JSONArray) {
@@ -52,14 +55,37 @@ public class PlaylistService {
     
     private void processPlaylistElement(String id, Object element) {
         if (element != null) {
-            JSONObject songObject = (JSONObject) element;
+            JSONObject playlistObject = (JSONObject) element;
+            String playlistName = (String) playlistObject.get("playlistName");
+            String description = (String) playlistObject.get("description");
+            String playlistImage = (String) playlistObject.get("playlistImage");
+            JSONArray songsArray = (JSONArray) playlistObject.get("songs");
+
+            List<MusicModel> songsList = new ArrayList<>();
+            if (songsArray != null) {
+                for (Object songObj : songsArray) {
+                    if (songObj instanceof JSONObject) {
+                        JSONObject songJSON = (JSONObject) songObj;
+                        MusicModel song = new MusicModel(
+                            (String) songJSON.get("album"),
+                            (String) songJSON.get("artist"),
+                            (String) songJSON.get("duration"),
+                            (String) songJSON.get("image"),
+                            (String) songJSON.get("link"),
+                            (String) songJSON.get("title")
+                        );
+                        songsList.add(song);
+                    }
+                }
+            }
+
             PlaylistModel playList = new PlaylistModel(
-                (String) songObject.get("playlistName"),
-                (String) songObject.get("description"),
-                (String) songObject.get("playlistImage"),
-                id
+                playlistName,
+                description,
+                playlistImage,
+                id,
+                songsList
             );
-            System.out.println(playList.getUniqueId());
             PlaylistModel.playlist.add(playList);
         }
     }
@@ -73,10 +99,7 @@ public class PlaylistService {
                 .build();
 
         try {
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            if (response.statusCode() == 200){
-                System.out.println("Playlist added successfully");
-            }
+            client.send(request, BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }   
@@ -91,10 +114,7 @@ public class PlaylistService {
                 .build();
 
         try {
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            if (response.statusCode() == 200){
-                System.out.println("Playlist updated successfully");
-            }
+            client.send(request, BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }   
@@ -110,6 +130,41 @@ public class PlaylistService {
         try {
             client.send(request, BodyHandlers.ofString());
 
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addMusic(PlaylistModel playList, MusicModel newMusic) {
+        HttpClient client = HttpClient.newHttpClient();
+        List<MusicModel> songs = playList.getMusicList();
+        songs.add(newMusic);
+    
+        JSONObject songsObject = new JSONObject();
+        int index = 1;
+        for (MusicModel song : songs) {
+            JSONObject songObject = new JSONObject();
+            songObject.put("title", song.getMusicTitle());
+            songObject.put("artist", song.getMusicArtist());
+            songObject.put("album", song.getMusicAlbum());
+            songObject.put("duration", song.getMusicDuration());
+            songObject.put("image", song.getMusicImage());
+            songObject.put("link", song.getMusicPath());
+            songsObject.put(String.valueOf(index++), songObject);
+        }
+
+        String jsonBody = songsObject.toJSONString();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/Playlist/"+playList.getUniqueId() + "/songs.json"))
+                .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .header("Content-Type", "application/json")
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());       
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
