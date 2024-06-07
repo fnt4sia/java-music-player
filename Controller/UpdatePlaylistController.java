@@ -12,6 +12,15 @@ public class UpdatePlaylistController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void deletePlaylist(String uniqueId) {
+        try {
+            PlaylistService playlistService = new PlaylistService();
+            playlistService.deletePlaylist(uniqueId);
+            playlistService.getPlaylist();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

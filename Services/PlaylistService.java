@@ -99,4 +99,19 @@ public class PlaylistService {
             e.printStackTrace();
         }   
     }
+
+    public void deletePlaylist(String uniqueId) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://music-player-b2c06-default-rtdb.asia-southeast1.firebasedatabase.app/Playlist/"+uniqueId+".json"))
+                .DELETE()
+                .build();
+
+        try {
+            client.send(request, BodyHandlers.ofString());
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
