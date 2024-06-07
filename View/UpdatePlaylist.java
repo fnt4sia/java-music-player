@@ -8,9 +8,8 @@ import javax.swing.*;
 import Controller.UpdatePlaylistController;
 import javax.imageio.ImageIO;
 
-
 public class UpdatePlaylist {
-    String playlistName;    
+    String playlistName;
     String description;
     String playlistImage;
     String uniqueId;
@@ -27,7 +26,6 @@ public class UpdatePlaylist {
     JTextField jtPlaylistImage = new JTextField("DEFAULT VALUE URL");
 
     JButton addPlaylist = new JButton("Update Playlist");
-    JButton deletePlaylist = new JButton("Delete Playlist");
     JButton backButton = new JButton();
 
     public UpdatePlaylist(String playlistName, String description, String playlistImage, String uniqueId) {
@@ -76,7 +74,6 @@ public class UpdatePlaylist {
         window.add(imageLabel);
         window.add(addPlaylist);
         window.add(backButton);
-        window.add(deletePlaylist);
     }
 
     private void setBounds() {
@@ -93,8 +90,6 @@ public class UpdatePlaylist {
         jtPlaylistImage.setBounds(50, 315, 400, 30);
 
         addPlaylist.setBounds(50, 400, 400, 30);
-        deletePlaylist.setBounds(50, 450, 400, 30);
-
     }
 
     private void customComponents() {
@@ -130,8 +125,7 @@ public class UpdatePlaylist {
         });
         // error handling kalau jt kosong
         addPlaylist.addActionListener(e -> {
-            if (jtPlaylistName.getText().isEmpty() || jtPlaylistDescription.getText().isEmpty()
-                    || jtPlaylistImage.getText().isEmpty()) {
+            if (jtPlaylistName.getText().isEmpty() || jtPlaylistDescription.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(window, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 new UpdatePlaylistController().updatePlaylist(jtPlaylistName.getText(), jtPlaylistDescription.getText(),
@@ -142,14 +136,5 @@ public class UpdatePlaylist {
                 new Playlist();
             }
         });
-
-        deletePlaylist.addActionListener(e -> {
-            new UpdatePlaylistController().deletePlaylist(uniqueId);
-            JOptionPane.showMessageDialog(window, "Playlist Deleted Successfully", "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-            window.dispose();
-            new Playlist();
-        });
     }
-
 }

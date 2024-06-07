@@ -19,6 +19,7 @@ public class DetailPlaylist {
     JFrame window = new JFrame("Add Playlist");
     JButton addMusic = new JButton("Add Music");
     JButton backButton = new JButton();
+    JLabel playlistName = new JLabel();
 
     public DetailPlaylist(PlaylistModel playlist) {
         this.playlist = playlist;
@@ -27,6 +28,8 @@ public class DetailPlaylist {
         window.setLocationRelativeTo(null);
         window.setLayout(null);
         window.setVisible(true);
+
+        playlistName.setText(playlist.getPlaylistName());
 
         setImageIcon();
         addComponents();
@@ -52,10 +55,12 @@ public class DetailPlaylist {
     private void addComponents() {
         window.add(backButton);
         window.add(addMusic);
+        window.add(playlistName);
     }
 
     private void setBounds() {
         backButton.setBounds(25, 20, 30, 30);
+        playlistName.setBounds(25, 75, 500, 30);
     }
 
     private void customComponents() {
@@ -73,16 +78,20 @@ public class DetailPlaylist {
         addMusic.setFocusPainted(false);
         addMusic.setVerticalAlignment(SwingConstants.CENTER);
 
+        playlistName.setFont(new Font("Arial", Font.BOLD, 24));
+        playlistName.setForeground(new Color(80, 196, 237));
+        
+
         if (MusicModel.musicList.size() > 0) {
             musicContainer();
-            addMusic.setBounds(300, 35, 150, 30);
+            addMusic.setBounds(300, 465, 150, 30);
         } else {
             JLabel emptyLabel = new JLabel("No music found yet, get your first music now!");
             emptyLabel.setBounds(50, 200, 400, 30);
             emptyLabel.setFont(new Font("Arial", Font.BOLD, 16));
             emptyLabel.setForeground(new Color(255, 0, 0));
             window.add(emptyLabel);
-            addMusic.setBounds(50, 250, 400, 30);
+            addMusic.setBounds(100, 250, 400, 30);
         }
     }
 
@@ -161,7 +170,7 @@ public class DetailPlaylist {
         musicPanel.add(glue, gbc);
 
         JScrollPane scrollPane = new JScrollPane(musicPanel);
-        scrollPane.setBounds(25, 75, 425, 350);
+        scrollPane.setBounds(25, 105, 425, 350);
         scrollPane.setBorder(new LineBorder(new Color(80, 196, 237), 1, true));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

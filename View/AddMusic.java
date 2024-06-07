@@ -140,7 +140,7 @@ public class AddMusic {
                     new AddMusicController().addMusic(playlist, MusicModel.musicList.get(index));
                     JOptionPane.showMessageDialog(null, "Music added to playlist");
                     window.dispose();
-                    new Playlist();
+                    new DetailPlaylist(playlist);
                 }
             });
         }
