@@ -186,7 +186,7 @@ public class Playlist {
                     new UpdatePlaylistController().deletePlaylist(PlaylistModel.playlist.get(index).getUniqueId());
                     window.dispose();
                     new Playlist();
-    
+                    
                 }
             });
         }

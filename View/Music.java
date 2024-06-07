@@ -84,6 +84,12 @@ public class Music {
         playerController = new MusicPlayerController(musicModel.getMusicPath());
         playerController.play();
         startPlayhead();
+
+        nextButton.addActionListener(e -> {
+            playerController.stop();
+            window.dispose();
+            playerController.nextMusic(musicModel.getMusicTitle());
+        });
     }
 
     private void setImageIcon() {
@@ -205,6 +211,8 @@ public class Music {
                 }
             }
         });
+
+        
     }
 
     private void startPlayhead() {
