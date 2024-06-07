@@ -1,13 +1,13 @@
 import Services.MusicService;
+import Services.PlaylistService;
 import View.Home;
 
 public class Main {
     public static void main(String[] args) {
-        MusicService firebaseService = new MusicService();
         try {
-            firebaseService.getMusic();
+            new MusicService().getMusic();
+            new PlaylistService().getPlaylist();
             new Home();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

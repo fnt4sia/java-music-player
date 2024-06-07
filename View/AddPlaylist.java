@@ -3,6 +3,11 @@ package View;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+
+import Controller.AddPlaylistController;
+import Model.PlaylistModel;
+import Services.PlaylistService;
+
 import java.io.File;
 import javax.imageio.ImageIO;
 
@@ -72,7 +77,7 @@ public class AddPlaylist {
         imageLabel.setBounds(50, 310, 150, 30);
         jtPlaylistImage.setBounds(50, 340, 400, 30);
 
-
+        addPlaylist.setBounds(50, 400, 150, 40);
     }
 
     private void customComponents() {
@@ -106,15 +111,15 @@ public class AddPlaylist {
             window.dispose();
             new Playlist();
         });
-        // error handling kalau jt kosong
         addPlaylist.addActionListener(e -> {
             if (jtPlaylistName.getText().isEmpty() || jtPlaylistDescription.getText().isEmpty()
                     || jtPlaylistImage.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(window, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                // controller disini tot
+                new AddPlaylistController().addPlaylist(jtPlaylistName.getText(), jtPlaylistDescription.getText(), jtPlaylistImage.getText());
                 JOptionPane.showMessageDialog(window, "Playlist Added Successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
+                PlaylistModel.playlist.clear();
                 window.dispose();
                 new Playlist();
             }

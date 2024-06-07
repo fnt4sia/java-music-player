@@ -7,6 +7,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.border.*;
 
+import Model.PlaylistModel;
+
 public class Playlist {
     JFrame window = new JFrame("Playlist");
     JLabel titleLabel = new JLabel("Your Playlist");
@@ -85,7 +87,7 @@ public class Playlist {
         gbc.gridx = 0;
 
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < PlaylistModel.playlist.size(); i++) {
             JPanel songPanel = new JPanel();
 
             songPanel.setLayout(null);
@@ -117,23 +119,20 @@ public class Playlist {
             songPanel.add(playlistImage);
 
 
-            // title diklik langsung buka playlist
-            String title = "This is taitle"; //sesuaiin  ama model
+            String title = PlaylistModel.playlist.get(i).getPlaylistName();
             JButton playlistTitle = new JButton(title);
             playlistTitle.setFont(new Font("Arial", Font.BOLD, 24));
             playlistTitle.setForeground(new Color(20, 20, 20));
             playlistTitle.setContentAreaFilled(true);  
             playlistTitle.setBorderPainted(true);    
             playlistTitle.setHorizontalAlignment(SwingConstants.LEFT);
-            // Adjust the size of the button to fit the text
+
             FontMetrics fm = playlistTitle.getFontMetrics(playlistTitle.getFont());
             int titleWidth = fm.stringWidth(title);
-            playlistTitle.setBounds(120, 10, titleWidth + 40, 30);  // Add some padding
+            playlistTitle.setBounds(120, 10, titleWidth + 40, 30); 
             songPanel.add(playlistTitle);
 
-
-            // JTextArea(PlaylistModel.musicList.get(i).getDescription());
-            JTextArea playlistDescription = new JTextArea("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim sit amet venenatis urna cursus. A erat nam at lectus. Cursus turpis massa tincidunt dui ut ornare lectus. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Et malesuada fames ac turpis egestas maecenas pharetra. Neque egestas congue quisque egestas diam in arcu cursus euismod. A iaculis at erat pellentesque adipiscing commodo elit. Quam id leo in vitae turpis massa sed elementum tempus. Arcu dictum varius duis at consectetur. Lectus quam id leo in. Turpis massa sed elementum tempus egestas sed. Sit amet consectetur adipiscing elit ut aliquam purus sit amet. In cursus turpis massa tincidunt dui ut ornare lectus. A cras semper auctor neque vitae. ");
+            JTextArea playlistDescription = new JTextArea(PlaylistModel.playlist.get(i).getDescription());
             playlistDescription.setLineWrap(true);
             playlistDescription.setWrapStyleWord(true);
             playlistDescription.setBounds(120, 40, 700, 80);

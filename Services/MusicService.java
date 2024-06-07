@@ -22,10 +22,9 @@ public class MusicService {
                 .thenAccept(jsonBody -> {
                     try {
                         JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonBody);
-                        // Assuming the songs are stored as key-value pairs in the JSONObject
                         for (Object key : jsonObject.keySet()) {
                             JSONObject songObject = (JSONObject) jsonObject.get(key);
-                            System.out.println(songObject.get("title"));
+
                             MusicModel musicModel = new MusicModel(
                                 (String) songObject.get("title"),
                                 (String) songObject.get("artist"),
