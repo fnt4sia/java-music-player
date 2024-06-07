@@ -7,6 +7,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.border.*;
 
+import Controller.UpdatePlaylistController;
 import Model.PlaylistModel;
 
 public class Playlist {
@@ -99,6 +100,7 @@ public class Playlist {
             window.add(songPanel);
             JLabel playlistImage = new JLabel();
             JButton playlistUpdate = new JButton();
+            JButton playlistDelete = new JButton();
 
             try {
                 BufferedImage playlistLogo = ImageIO.read(new File("Assets/song_logo.jpg"));
@@ -108,6 +110,10 @@ public class Playlist {
                 BufferedImage updatePlaylistLogo = ImageIO.read(new File("Assets/edit.png"));
                 ImageIcon updatePlaylistIcon = new ImageIcon(updatePlaylistLogo.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
                 playlistUpdate.setIcon(updatePlaylistIcon);
+
+                BufferedImage deletePlaylistLogo = ImageIO.read(new File("Assets/bin.png"));
+                ImageIcon deletePlaylistIcon = new ImageIcon(deletePlaylistLogo.getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                playlistDelete.setIcon(deletePlaylistIcon);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -144,8 +150,14 @@ public class Playlist {
             playlistDescription.setFocusable(false);
             songPanel.add(playlistDescription);
 
-            playlistUpdate.setBounds(800, 10, 30, 30);  
+            playlistUpdate.setBounds(780, 10, 30, 30);  
+            playlistUpdate.setOpaque(false);
+            playlistDelete.setBounds(820, 10, 30, 30);
+            playlistDelete.setContentAreaFilled(false);
+            playlistDelete.setBorderPainted(false);
+            
             songPanel.add(playlistUpdate);
+            songPanel.add(playlistDelete);
 
 
             playlistController.add(songPanel, gbc);
@@ -163,6 +175,19 @@ public class Playlist {
                     PlaylistModel.playlist.get(index).getPlaylistImage(),
                     PlaylistModel.playlist.get(index).getUniqueId()
                 );
+            });
+
+            playlistDelete.addActionListener(e -> {
+                //yes or no dialog
+            
+                int dialogButton =
+                JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this playlist?", "Delete Playlist", JOptionPane.YES_NO_OPTION);
+                if(dialogButton == JOptionPane.YES_OPTION) {
+                    new UpdatePlaylistController().deletePlaylist(PlaylistModel.playlist.get(index).getUniqueId());
+                    window.dispose();
+                    new Playlist();
+    
+                }
             });
         }
         // push all items to the top
